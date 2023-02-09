@@ -881,14 +881,14 @@ namespace BookApp.Migrations
                         new
                         {
                             OrderId = 3,
-                            CustomerId = 2,
+                            CustomerId = 1,
                             OrderedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TotalPrice = 0.0
                         },
                         new
                         {
                             OrderId = 4,
-                            CustomerId = 3,
+                            CustomerId = 1,
                             OrderedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TotalPrice = 0.0
                         },
@@ -906,6 +906,33 @@ namespace BookApp.Migrations
                             OrderedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TotalPrice = 0.0
                         });
+                });
+
+            modelBuilder.Entity("BookApp.Models.OrderStatus", b =>
+                {
+                    b.Property<int>("OrderStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OrderStatusId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderStatus");
                 });
 
             modelBuilder.Entity("BookApp.Models.PriceOffer", b =>
@@ -1397,6 +1424,15 @@ namespace BookApp.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("BookApp.Models.OrderStatus", b =>
+                {
+                    b.HasOne("BookApp.Models.Order", "Order")
+                        .WithMany("Statuses")
+                        .HasForeignKey("OrderId");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("BookApp.Models.PriceOffer", b =>
                 {
                     b.HasOne("BookApp.Models.Book", "Book")
@@ -1453,6 +1489,8 @@ namespace BookApp.Migrations
             modelBuilder.Entity("BookApp.Models.Order", b =>
                 {
                     b.Navigation("Items");
+
+                    b.Navigation("Statuses");
                 });
 
             modelBuilder.Entity("BookApp.Models.Tag", b =>

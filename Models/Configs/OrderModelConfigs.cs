@@ -1,6 +1,8 @@
 ﻿using BookApp.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
 using System.Collections.Generic;
 
 namespace BookApp.Models.Configs
@@ -17,12 +19,12 @@ namespace BookApp.Models.Configs
             builder.Property(x => x.OrderNo).HasValueGenerator((x, y) => new OrderNoValueGenerator());
 
             var orders = new List<Order>() {
-                new Order() { OrderId = 1, CustomerId = 1 },
-                new Order() { OrderId = 2, CustomerId = 1 },
-                new Order() { OrderId = 3, CustomerId = 2 },
-                new Order() { OrderId = 4, CustomerId = 3 },
-                new Order() { OrderId = 5, CustomerId = 4 },
-                new Order() { OrderId = 6, CustomerId = 5 }
+                new Order() { OrderId = 1, CustomerId = 1                  },
+                new Order() { OrderId = 2, CustomerId = 1},
+               new Order() { OrderId = 3, CustomerId = 1,},
+                new Order() { OrderId = 4, CustomerId = 1,},
+                new Order() { OrderId = 5, CustomerId = 4,},
+                new Order() { OrderId = 6, CustomerId = 5, },
             };
 
             builder.HasData(orders);

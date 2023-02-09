@@ -2,6 +2,7 @@
 using BookApp.Models.Configs;
 using BookApp.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 
 namespace BookApp.Data
@@ -23,7 +24,7 @@ namespace BookApp.Data
         public AppBookContext()
 
         {
-            ConnectionString = "Server=.\\SQLEXPRESS;Database=BookApp;Trusted_Connection=True;";            
+            ConnectionString = "Server=.\\SQLEXPRESS;Database=BookApp;Trusted_Connection=True;";
         }
 
         protected override void OnConfiguring(
@@ -45,10 +46,11 @@ namespace BookApp.Data
             modelBuilder.ApplyConfiguration(new BookAuthorModelConfigs());
             modelBuilder.ApplyConfiguration(new BookTagModelConfigs());
             modelBuilder.ApplyConfiguration(new OrderModelConfigs());
+            modelBuilder.ApplyConfiguration(new OrderStatusModelConfigs());
             modelBuilder.ApplyConfiguration(new ItemModelConfigs());
 
             modelBuilder.HasDbFunction(() => UdfMethods.AverageVotes(default(int)));
-            modelBuilder.HasDbFunction(() => UdfMethods.TotalOrderPrice(default(int)));
+            modelBuilder.HasDbFunction(() => UdfMethods.TotalOrderPrice(default(int)));            
 
         }
     }

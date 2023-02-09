@@ -22,7 +22,7 @@ namespace BookApp.Models.Configs
             customers.Add(new Customer() { CustomerId = 7, FirstName = "David", LastName = " Anderson" });
             customers.Add(new Customer() { CustomerId = 8, FirstName = "Rachel", LastName = "Davis" });
             customers.Add(new Customer() { CustomerId = 9, FirstName = "Mark", LastName = "Thompson" });
-
+            
             builder.HasData(customers);
         }
     }

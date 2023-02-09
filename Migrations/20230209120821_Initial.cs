@@ -245,6 +245,28 @@ namespace BookApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OrderStatus",
+                columns: table => new
+                {
+                    OrderStatusId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderStatus", x => x.OrderStatusId);
+                    table.ForeignKey(
+                        name: "FK_OrderStatus_Ordes_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Ordes",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "Authors",
                 columns: new[] { "AuthorId", "Name", "WebUrl" },
@@ -420,12 +442,12 @@ namespace BookApp.Migrations
                 columns: new[] { "OrderId", "CustomerId", "OrderNo" },
                 values: new object[,]
                 {
-                    { 5, 4, "f0f672a4-2137-46b6-916f-7192c64693d0" },
-                    { 1, 1, "767bac0f-0b2f-41fc-8198-b831b892d9c4" },
-                    { 2, 1, "2860715c-e3e3-4fe4-98f0-743ff0e21c3e" },
-                    { 6, 5, "e5121e87-5b3e-4ba2-ac15-47bd3d0bac02" },
-                    { 3, 2, "57b75acb-f170-4d9a-b0b2-ca5c8153ae2c" },
-                    { 4, 3, "a21c8f95-19e0-4e8d-8bf9-cdbe165e59df" }
+                    { 5, 4, "2dfe8d3b-5927-4e8a-bce7-f4ebe703603e" },
+                    { 1, 1, "7d4b1075-b0d6-461c-94f6-965f6517a0d3" },
+                    { 2, 1, "4b99a83e-5e8a-404e-8298-df94e88eb996" },
+                    { 3, 1, "e4cd8e7e-5349-4579-be2d-425fa44db71a" },
+                    { 4, 1, "00a91dc2-9b2d-41e6-b5f6-063f4f426fd0" },
+                    { 6, 5, "81911970-015f-47a8-b7e1-defaea0fa9d7" }
                 });
 
             migrationBuilder.InsertData(
@@ -435,12 +457,12 @@ namespace BookApp.Migrations
                 {
                     { 20, 14, "Excellent resource for data science", 3, 5 },
                     { 3, 3, "Informative but could be more engaging", 3, 3 },
-                    { 2, 2, "Good information but could be more in-depth.", 2, 4 },
-                    { 11, 15, "Disappointing, not what I was expecting", 2, 2 },
+                    { 19, 13, "Disappointing, not what I was expecting", 2, 2 },
                     { 18, 12, "Informative but could be more comprehensive", 1, 3 },
+                    { 2, 2, "Good information but could be more in-depth.", 2, 4 },
                     { 10, 7, "Helpful guide for beginners", 1, 4 },
                     { 1, 1, "Great book, easy to understand.", 1, 5 },
-                    { 19, 13, "Disappointing, not what I was expecting", 2, 2 },
+                    { 11, 15, "Disappointing, not what I was expecting", 2, 2 },
                     { 17, 16, "Good introduction to Cloud Native Infrastructure", 9, 4 },
                     { 12, 17, "Great book, easy to understand", 4, 5 },
                     { 21, 6, "Good introduction to Cloud Native Infrastructure", 4, 4 },
@@ -494,6 +516,11 @@ namespace BookApp.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderStatus_OrderId",
+                table: "OrderStatus",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Ordes_CustomerId",
                 table: "Ordes",
                 column: "CustomerId");
@@ -525,6 +552,9 @@ namespace BookApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "OrderStatus");
 
             migrationBuilder.DropTable(
                 name: "PriceOffers");

@@ -56,10 +56,11 @@ namespace BookApp
         static void Main(string[] args)
         {
             using var context = new AppBookContext();
-            var orders = context.Ordes.ToList();
-            foreach (var item in orders)
+            var books = context.Books.Select(x => new { Title = x.Title, Evaluation = (double?)x.Reviews.Average(y => y.NumStars) });
+            System.Console.WriteLine("");
+            foreach (var item in books)
             {
-                System.Console.WriteLine(item.OrderNumber);
+                System.Console.WriteLine($"{item.Title} - {item.Evaluation}");
                
             }
         }
