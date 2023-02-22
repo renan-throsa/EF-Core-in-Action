@@ -18,7 +18,7 @@ namespace BookApp.Migrations
       BEGIN
       DECLARE @result AS float
       SELECT @result = AVG(CAST([NumStars] AS float)) 
-           FROM dbo.Review AS r
+           FROM dbo.Reviews AS r
            WHERE @bookId = r.BookId
       RETURN @result
       END");
@@ -53,8 +53,8 @@ namespace BookApp.Migrations
                 {
                     BookId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ISBN = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    ISBN = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PublishedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     Publisher = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -65,7 +65,6 @@ namespace BookApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Books", x => x.BookId);
-                    table.UniqueConstraint("AK_Books_ISBN", x => x.ISBN);
                 });
 
             migrationBuilder.CreateTable(
@@ -442,12 +441,12 @@ namespace BookApp.Migrations
                 columns: new[] { "OrderId", "CustomerId", "OrderNo" },
                 values: new object[,]
                 {
-                    { 5, 4, "2dfe8d3b-5927-4e8a-bce7-f4ebe703603e" },
-                    { 1, 1, "7d4b1075-b0d6-461c-94f6-965f6517a0d3" },
-                    { 2, 1, "4b99a83e-5e8a-404e-8298-df94e88eb996" },
-                    { 3, 1, "e4cd8e7e-5349-4579-be2d-425fa44db71a" },
-                    { 4, 1, "00a91dc2-9b2d-41e6-b5f6-063f4f426fd0" },
-                    { 6, 5, "81911970-015f-47a8-b7e1-defaea0fa9d7" }
+                    { 5, 4, "55161583-e1a0-4586-8d0f-89f543093dd4" },
+                    { 1, 1, "45345648-7955-455d-804e-2d9c461f44cd" },
+                    { 2, 1, "17add3c2-ca45-4d7c-a4e8-95cc772be6f3" },
+                    { 3, 1, "e011f440-e34b-4474-b2e0-8fc17eaac695" },
+                    { 4, 1, "5a17b5f6-7ca8-4be9-95cc-3bef520c760b" },
+                    { 6, 5, "d99da0c0-d1b0-4ce4-9707-f915f06288d4" }
                 });
 
             migrationBuilder.InsertData(
@@ -499,6 +498,12 @@ namespace BookApp.Migrations
                 name: "IX_BookAuthor_AuthorId",
                 table: "BookAuthor",
                 column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_ISBN",
+                table: "Books",
+                column: "ISBN",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookTag_TagId",

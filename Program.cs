@@ -4,11 +4,28 @@ using BookApp.Models;
 using BookApp.Models.DTOS;
 using BookApp.Utils;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace BookApp
 {
+    public sealed class Point
+    {
+        public double X { get; set; }
+        public double Y { get; set; }
+
+        public Point(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
+    }
+
+
     class Program
     {
         static void GetBooksList()
@@ -37,7 +54,7 @@ namespace BookApp
             }
         }
 
-        static void BookAverageVotes()
+        static void BookAverageVotesWithMethod()
         {
             using var context = new AppBookContext();
             var bookAndVotes = context.Books.Select(x => new BookDTO
@@ -47,22 +64,47 @@ namespace BookApp
                 AveVotes = UdfMethods.AverageVotes(x.BookId)
             }).ToList();
 
-            System.Console.WriteLine("");
+            Console.WriteLine("");
             foreach (var item in bookAndVotes)
             {
-                System.Console.WriteLine($"{item.Title} : {item.AveVotes}");
+                Console.WriteLine($"{item.Title} : {item.AveVotes}");
             }
         }
-        static void Main(string[] args)
+
+        static void BookAverageVotesWithLinq()
         {
             using var context = new AppBookContext();
             var books = context.Books.Select(x => new { Title = x.Title, Evaluation = (double?)x.Reviews.Average(y => y.NumStars) });
-            System.Console.WriteLine("");
+            Console.WriteLine("");
             foreach (var item in books)
             {
-                System.Console.WriteLine($"{item.Title} - {item.Evaluation}");
-               
+                Console.WriteLine($"{item.Title} - {item.Evaluation}");
+
             }
+        }
+
+        static void ToQueryString()
+        {
+            using var context = new AppBookContext();
+            var query = context.Books.Select(x => new { Title = x.Title, Evaluation = (double?)x.Reviews.Average(y => y.NumStars) });
+            var sql = query.ToQueryString();
+            Console.WriteLine(sql);
+        }
+
+        
+        static void FilteredQueries()
+        {
+            using var context = new AppBookContext();
+            var b  = context.Books.SingleOrDefault(x=> x.ISBN.Equals("078-0201616224"));
+            var query = context.Authors.Include(x => x.Books.Where(x => x.Book.Title.StartsWith("T"))).ToQueryString();
+            Console.WriteLine(b);
+            Console.WriteLine(query);
+        }
+
+        static void Main(string[] args)
+        {
+            //BookAverageVotesWithLinq();
+            BookAverageVotesWithMethod();
         }
     }
 }

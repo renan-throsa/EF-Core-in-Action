@@ -2,7 +2,6 @@
 using BookApp.Models.Configs;
 using BookApp.Utils;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 
 namespace BookApp.Data

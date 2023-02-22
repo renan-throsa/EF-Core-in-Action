@@ -116,7 +116,8 @@ namespace BookApp.Migrations
 
                     b.Property<string>("ISBN")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
@@ -134,12 +135,13 @@ namespace BookApp.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("BookId");
 
-                    b.HasAlternateKey("ISBN");
+                    b.HasIndex("ISBN")
+                        .IsUnique();
 
                     b.ToTable("Books");
 

@@ -1,8 +1,6 @@
 ﻿using BookApp.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
 using System.Collections.Generic;
 
 namespace BookApp.Models.Configs

@@ -10,10 +10,11 @@ namespace BookApp.Models.Configs
     {
         public void Configure(EntityTypeBuilder<Book> builder)
         {
-            builder.Property(x => x.Title).IsRequired().HasMaxLength(256);
+            builder.Property(x => x.Title).IsRequired().HasMaxLength(128);
             builder.Property(x => x.Publisher).IsRequired().HasMaxLength(64);
             builder.Property(x => x.PublishedOn).HasColumnType("datetime");
-            builder.HasAlternateKey(x => x.ISBN);
+            builder.Property(x => x.ISBN).IsRequired().HasMaxLength(14);
+            builder.HasIndex(x => x.ISBN).IsUnique();
 
             builder.HasOne(x => x.Promotion).WithOne(y => y.Book);
             builder.HasMany(x => x.Reviews).WithOne(y => y.Book);
