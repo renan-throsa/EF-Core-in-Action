@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookApp.Migrations
 {
     [DbContext(typeof(AppBookContext))]
-    [Migration("20230221191707_Initial")]
+    [Migration("20231118215535_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -179,7 +179,7 @@ namespace BookApp.Migrations
                             Description = "A guide to preparing for technical interviews",
                             ISBN = "978-0984782857",
                             ImageUrl = "https://images-na.ssl-images-amazon.com/images/I/41rNjZBm3sL._SX331_BO1,204,203,200_.jpg",
-                            Price = 30.99f,
+                            Price = 33.99f,
                             PublishedOn = new DateTime(2015, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Publisher = "CareerCup",
                             Title = "Cracking the Coding Interview: 189 Programming Questions and Solutions"
@@ -670,6 +670,103 @@ namespace BookApp.Migrations
                         });
                 });
 
+            modelBuilder.Entity("BookApp.Models.Configs.BookCustomer", b =>
+                {
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookId", "CustomerId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("BookCustomer");
+
+                    b.HasData(
+                        new
+                        {
+                            BookId = 1,
+                            CustomerId = 1
+                        },
+                        new
+                        {
+                            BookId = 2,
+                            CustomerId = 2
+                        },
+                        new
+                        {
+                            BookId = 3,
+                            CustomerId = 3
+                        },
+                        new
+                        {
+                            BookId = 4,
+                            CustomerId = 4
+                        },
+                        new
+                        {
+                            BookId = 5,
+                            CustomerId = 5
+                        },
+                        new
+                        {
+                            BookId = 6,
+                            CustomerId = 6
+                        },
+                        new
+                        {
+                            BookId = 7,
+                            CustomerId = 7
+                        },
+                        new
+                        {
+                            BookId = 8,
+                            CustomerId = 8
+                        },
+                        new
+                        {
+                            BookId = 9,
+                            CustomerId = 9
+                        },
+                        new
+                        {
+                            BookId = 10,
+                            CustomerId = 10
+                        },
+                        new
+                        {
+                            BookId = 11,
+                            CustomerId = 10
+                        },
+                        new
+                        {
+                            BookId = 12,
+                            CustomerId = 1
+                        },
+                        new
+                        {
+                            BookId = 13,
+                            CustomerId = 2
+                        },
+                        new
+                        {
+                            BookId = 14,
+                            CustomerId = 2
+                        },
+                        new
+                        {
+                            BookId = 15,
+                            CustomerId = 4
+                        },
+                        new
+                        {
+                            BookId = 16,
+                            CustomerId = 5
+                        });
+                });
+
             modelBuilder.Entity("BookApp.Models.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
@@ -749,6 +846,12 @@ namespace BookApp.Migrations
                             CustomerId = 9,
                             FirstName = "Mark",
                             LastName = "Thompson"
+                        },
+                        new
+                        {
+                            CustomerId = 10,
+                            FirstName = "Adam",
+                            LastName = "Walker"
                         });
                 });
 
@@ -784,7 +887,7 @@ namespace BookApp.Migrations
                         {
                             ItemId = 1,
                             BookId = 1,
-                            BookPrice = 30.989999999999998,
+                            BookPrice = 36.890998840332031,
                             NumBooks = (short)1,
                             OrderId = 1
                         },
@@ -792,15 +895,15 @@ namespace BookApp.Migrations
                         {
                             ItemId = 2,
                             BookId = 2,
-                            BookPrice = 35.990000000000002,
+                            BookPrice = 28.792001724243164,
                             NumBooks = (short)1,
-                            OrderId = 2
+                            OrderId = 1
                         },
                         new
                         {
                             ItemId = 3,
                             BookId = 6,
-                            BookPrice = 35.990000000000002,
+                            BookPrice = 26.992500305175781,
                             NumBooks = (short)1,
                             OrderId = 3
                         },
@@ -808,7 +911,7 @@ namespace BookApp.Migrations
                         {
                             ItemId = 4,
                             BookId = 11,
-                            BookPrice = 50.990000000000002,
+                            BookPrice = 53.242500305175781,
                             NumBooks = (short)1,
                             OrderId = 4
                         },
@@ -816,7 +919,7 @@ namespace BookApp.Migrations
                         {
                             ItemId = 5,
                             BookId = 16,
-                            BookPrice = 35.990000000000002,
+                            BookPrice = 49.990001678466797,
                             NumBooks = (short)1,
                             OrderId = 5
                         },
@@ -824,17 +927,89 @@ namespace BookApp.Migrations
                         {
                             ItemId = 6,
                             BookId = 1,
-                            BookPrice = 30.989999999999998,
+                            BookPrice = 36.890998840332031,
                             NumBooks = (short)2,
-                            OrderId = 6
+                            OrderId = 5
                         },
                         new
                         {
                             ItemId = 7,
-                            BookId = 4,
-                            BookPrice = 40.990000000000002,
+                            BookId = 5,
+                            BookPrice = 30.594001770019531,
                             NumBooks = (short)1,
                             OrderId = 6
+                        },
+                        new
+                        {
+                            ItemId = 8,
+                            BookId = 6,
+                            BookPrice = 26.992500305175781,
+                            NumBooks = (short)1,
+                            OrderId = 6
+                        },
+                        new
+                        {
+                            ItemId = 9,
+                            BookId = 7,
+                            BookPrice = 25.989999771118164,
+                            NumBooks = (short)1,
+                            OrderId = 6
+                        },
+                        new
+                        {
+                            ItemId = 10,
+                            BookId = 8,
+                            BookPrice = 30.495000839233398,
+                            NumBooks = (short)2,
+                            OrderId = 7
+                        },
+                        new
+                        {
+                            ItemId = 11,
+                            BookId = 9,
+                            BookPrice = 60.742500305175781,
+                            NumBooks = (short)1,
+                            OrderId = 7
+                        },
+                        new
+                        {
+                            ItemId = 12,
+                            BookId = 10,
+                            BookPrice = 15.742500305175781,
+                            NumBooks = (short)1,
+                            OrderId = 7
+                        },
+                        new
+                        {
+                            ItemId = 13,
+                            BookId = 11,
+                            BookPrice = 53.242500305175781,
+                            NumBooks = (short)1,
+                            OrderId = 8
+                        },
+                        new
+                        {
+                            ItemId = 14,
+                            BookId = 12,
+                            BookPrice = 23.242500305175781,
+                            NumBooks = (short)1,
+                            OrderId = 9
+                        },
+                        new
+                        {
+                            ItemId = 15,
+                            BookId = 13,
+                            BookPrice = 24.989999771118164,
+                            NumBooks = (short)2,
+                            OrderId = 10
+                        },
+                        new
+                        {
+                            ItemId = 16,
+                            BookId = 17,
+                            BookPrice = 39.990001678466797,
+                            NumBooks = (short)1,
+                            OrderId = 2
                         });
                 });
 
@@ -865,7 +1040,7 @@ namespace BookApp.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Ordes");
+                    b.ToTable("Orders");
 
                     b.HasData(
                         new
@@ -885,14 +1060,14 @@ namespace BookApp.Migrations
                         new
                         {
                             OrderId = 3,
-                            CustomerId = 1,
+                            CustomerId = 2,
                             OrderedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TotalPrice = 0.0
                         },
                         new
                         {
                             OrderId = 4,
-                            CustomerId = 1,
+                            CustomerId = 3,
                             OrderedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TotalPrice = 0.0
                         },
@@ -907,6 +1082,34 @@ namespace BookApp.Migrations
                         {
                             OrderId = 6,
                             CustomerId = 5,
+                            OrderedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalPrice = 0.0
+                        },
+                        new
+                        {
+                            OrderId = 7,
+                            CustomerId = 6,
+                            OrderedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalPrice = 0.0
+                        },
+                        new
+                        {
+                            OrderId = 8,
+                            CustomerId = 6,
+                            OrderedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalPrice = 0.0
+                        },
+                        new
+                        {
+                            OrderId = 9,
+                            CustomerId = 8,
+                            OrderedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TotalPrice = 0.0
+                        },
+                        new
+                        {
+                            OrderId = 10,
+                            CustomerId = 10,
                             OrderedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TotalPrice = 0.0
                         });
@@ -953,7 +1156,9 @@ namespace BookApp.Migrations
                         .HasColumnType("real");
 
                     b.Property<string>("PromotionalText")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("PriceOfferId");
 
@@ -961,6 +1166,85 @@ namespace BookApp.Migrations
                         .IsUnique();
 
                     b.ToTable("PriceOffers");
+
+                    b.HasData(
+                        new
+                        {
+                            PriceOfferId = 1,
+                            BookId = 1,
+                            NewPrice = 36.891f,
+                            PromotionalText = "Xmas Season Offer!"
+                        },
+                        new
+                        {
+                            PriceOfferId = 2,
+                            BookId = 2,
+                            NewPrice = 28.792002f,
+                            PromotionalText = "Xmas Season Offer!"
+                        },
+                        new
+                        {
+                            PriceOfferId = 3,
+                            BookId = 3,
+                            NewPrice = 25.4925f,
+                            PromotionalText = "Xmas Season Offer!"
+                        },
+                        new
+                        {
+                            PriceOfferId = 4,
+                            BookId = 4,
+                            NewPrice = 56.9925f,
+                            PromotionalText = "Xmas Season Offer!"
+                        },
+                        new
+                        {
+                            PriceOfferId = 5,
+                            BookId = 5,
+                            NewPrice = 30.594002f,
+                            PromotionalText = "Xmas Season Offer!"
+                        },
+                        new
+                        {
+                            PriceOfferId = 6,
+                            BookId = 6,
+                            NewPrice = 26.9925f,
+                            PromotionalText = "Xmas Season Offer!"
+                        },
+                        new
+                        {
+                            PriceOfferId = 7,
+                            BookId = 8,
+                            NewPrice = 30.495f,
+                            PromotionalText = "Special Offer!"
+                        },
+                        new
+                        {
+                            PriceOfferId = 8,
+                            BookId = 9,
+                            NewPrice = 60.7425f,
+                            PromotionalText = "Xmas Season Offer!"
+                        },
+                        new
+                        {
+                            PriceOfferId = 9,
+                            BookId = 10,
+                            NewPrice = 15.7425f,
+                            PromotionalText = "Xmas Season Offer!"
+                        },
+                        new
+                        {
+                            PriceOfferId = 10,
+                            BookId = 11,
+                            NewPrice = 53.2425f,
+                            PromotionalText = "Xmas Season Offer!"
+                        },
+                        new
+                        {
+                            PriceOfferId = 11,
+                            BookId = 12,
+                            NewPrice = 23.2425f,
+                            PromotionalText = "Xmas Season Offer!"
+                        });
                 });
 
             modelBuilder.Entity("BookApp.Models.Review", b =>
@@ -1398,6 +1682,25 @@ namespace BookApp.Migrations
                     b.Navigation("Tag");
                 });
 
+            modelBuilder.Entity("BookApp.Models.Configs.BookCustomer", b =>
+                {
+                    b.HasOne("BookApp.Models.Book", "Book")
+                        .WithMany("WishList")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BookApp.Models.Customer", "Customer")
+                        .WithMany("WishList")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("BookApp.Models.Item", b =>
                 {
                     b.HasOne("BookApp.Models.Book", "Book")
@@ -1481,6 +1784,8 @@ namespace BookApp.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("Tags");
+
+                    b.Navigation("WishList");
                 });
 
             modelBuilder.Entity("BookApp.Models.Customer", b =>
@@ -1488,6 +1793,8 @@ namespace BookApp.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("WishList");
                 });
 
             modelBuilder.Entity("BookApp.Models.Order", b =>

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using BookApp.DomainEvents;
+using BookApp.Models.Configs;
+using System;
 using System.Collections.Generic;
 
 
 namespace BookApp.Models
 {
-    public class Book
+    public class Book : AddEventsToEntity
     {
         public int BookId { get; set; }
         public string ISBN { get; set; }
@@ -17,10 +19,13 @@ namespace BookApp.Models
         public string ImageUrl { get; set; }
         public bool Available { get; set; }
 
-        public PriceOffer Promotion { get; set; }
+        public PriceOffer? Promotion { get; set; }
         public ICollection<Review> Reviews { get; set; }
         public ICollection<BookTag> Tags { get; set; }
         public ICollection<BookAuthor> Authors { get; set; }
+
+        public ICollection<BookCustomer> WishList { get; set; }
+
 
     }
 }

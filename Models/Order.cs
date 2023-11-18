@@ -15,6 +15,7 @@ namespace BookApp.Models
         public Customer Customer { get; set; }
 
         public ICollection<Item> Items { get; set; }
+
         public ICollection<OrderStatus> Statuses { get; set; }
 
         public string OrderNumber => $"SO{OrderId:D6}";

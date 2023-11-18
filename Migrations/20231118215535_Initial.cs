@@ -127,7 +127,7 @@ namespace BookApp.Migrations
                     PriceOfferId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NewPrice = table.Column<float>(type: "real", nullable: false),
-                    PromotionalText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PromotionalText = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     BookId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -142,7 +142,31 @@ namespace BookApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ordes",
+                name: "BookCustomer",
+                columns: table => new
+                {
+                    BookId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookCustomer", x => new { x.BookId, x.CustomerId });
+                    table.ForeignKey(
+                        name: "FK_BookCustomer_Books_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Books",
+                        principalColumn: "BookId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BookCustomer_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
                 columns: table => new
                 {
                     OrderId = table.Column<int>(type: "int", nullable: false)
@@ -154,9 +178,9 @@ namespace BookApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ordes", x => x.OrderId);
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Ordes_Customers_CustomerId",
+                        name: "FK_Orders_Customers_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customers",
                         principalColumn: "CustomerId",
@@ -237,9 +261,9 @@ namespace BookApp.Migrations
                         principalColumn: "BookId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Items_Ordes_OrderId",
+                        name: "FK_Items_Orders_OrderId",
                         column: x => x.OrderId,
-                        principalTable: "Ordes",
+                        principalTable: "Orders",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -259,9 +283,9 @@ namespace BookApp.Migrations
                 {
                     table.PrimaryKey("PK_OrderStatus", x => x.OrderStatusId);
                     table.ForeignKey(
-                        name: "FK_OrderStatus_Ordes_OrderId",
+                        name: "FK_OrderStatus_Orders_OrderId",
                         column: x => x.OrderId,
-                        principalTable: "Ordes",
+                        principalTable: "Orders",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -301,7 +325,7 @@ namespace BookApp.Migrations
                     { 7, true, "This book provides a developer-level introduction along with more advanced and useful features of JavaScript. It covers concepts such as objects, functions, and arrays, and it examines features such as closures, inheritance, and automatic semicolon insertion.", "978-0596517748", "https://images-na.ssl-images-amazon.com/images/I/51e6YZU6bxL._SX379_BO1,204,203,200_.jpg", 25.99f, new DateTime(2008, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "O'Reilly Media", "JavaScript: The Good Parts" },
                     { 5, true, "A guide to software construction principles and practices", "978-0735619670", "https://images-na.ssl-images-amazon.com/images/I/41yI1Gzv1aL._SX400_BO1,204,203,200_.jpg", 50.99f, new DateTime(2004, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Microsoft Press", "Code Complete: A Practical Handbook of Software Construction" },
                     { 4, true, "Design Patterns is a modern classic in the literature of object-oriented development, offering timeless and elegant solutions to common problems in software design. It describes patterns for managing object creation, composing objects into larger structures, and coordinating control flow between objects.", "978-0201633610", "https://images-na.ssl-images-amazon.com/images/I/4124eHhdGDL._SX396_BO1,204,203,200_.jpg", 45.99f, new DateTime(1995, 10, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Addison-Wesley Professional", "Design Patterns: Elements of Reusable Object-Oriented Software" },
-                    { 3, true, "A guide to preparing for technical interviews", "978-0984782857", "https://images-na.ssl-images-amazon.com/images/I/41rNjZBm3sL._SX331_BO1,204,203,200_.jpg", 30.99f, new DateTime(2015, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "CareerCup", "Cracking the Coding Interview: 189 Programming Questions and Solutions" },
+                    { 3, true, "A guide to preparing for technical interviews", "978-0984782857", "https://images-na.ssl-images-amazon.com/images/I/41rNjZBm3sL._SX331_BO1,204,203,200_.jpg", 33.99f, new DateTime(2015, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "CareerCup", "Cracking the Coding Interview: 189 Programming Questions and Solutions" },
                     { 2, true, "A guide to becoming a better programmer", "978-0201616224", "https://images-na.ssl-images-amazon.com/images/I/41yczzw6U0L._SX331_BO1,204,203,200_.jpg", 35.99f, new DateTime(1999, 10, 20, 0, 0, 0, 0, DateTimeKind.Unspecified), "Addison-Wesley Professional", "The Pragmatic Programmer: From Journeyman to Master" },
                     { 1, true, "A guide to writing clean and maintainable code", "978-0134685991", "https://images-na.ssl-images-amazon.com/images/I/41v0QiEwZ7L._SX397_BO1,204,203,200_.jpg", 40.99f, new DateTime(2008, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Prentice Hall", "Clean Code: A Handbook of Agile Software Craftsmanship" },
                     { 9, true, "A comprehensive guide to computer programming", "978-0134685992", "https://images-na.ssl-images-amazon.com/images/I/51X5rQQ8-3L._SX405_BO1,204,203,200_.jpg", 80.99f, new DateTime(1968, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Addison-Wesley Professional", "The Art of Computer Programming" }
@@ -313,6 +337,7 @@ namespace BookApp.Migrations
                 values: new object[,]
                 {
                     { 7, "David", " Anderson" },
+                    { 10, "Adam", "Walker" },
                     { 9, "Mark", "Thompson" },
                     { 8, "Rachel", "Davis" },
                     { 6, "Emily", " Williams" },
@@ -332,8 +357,7 @@ namespace BookApp.Migrations
                     { 23, "Software Engineering" },
                     { 22, "Software Development Process" },
                     { 21, "Software Development" },
-                    { 20, "Software Design" },
-                    { 19, "Software Construction" }
+                    { 20, "Software Design" }
                 });
 
             migrationBuilder.InsertData(
@@ -341,6 +365,7 @@ namespace BookApp.Migrations
                 columns: new[] { "TagId", "TagName" },
                 values: new object[,]
                 {
+                    { 19, "Software Construction" },
                     { 18, "Project Management" },
                     { 17, "Programming Languages" },
                     { 16, "Programming Language" },
@@ -368,85 +393,137 @@ namespace BookApp.Migrations
                 values: new object[,]
                 {
                     { 1, 1, (byte)0 },
-                    { 2, 17, (byte)0 },
-                    { 3, 16, (byte)0 },
-                    { 9, 14, (byte)0 },
-                    { 7, 13, (byte)0 },
-                    { 7, 12, (byte)0 },
-                    { 10, 12, (byte)0 },
-                    { 9, 11, (byte)0 },
                     { 9, 10, (byte)0 },
-                    { 10, 15, (byte)0 },
+                    { 10, 12, (byte)0 },
+                    { 8, 9, (byte)0 },
+                    { 7, 12, (byte)0 },
                     { 8, 8, (byte)0 },
                     { 7, 7, (byte)0 },
                     { 6, 6, (byte)0 },
                     { 5, 5, (byte)0 },
+                    { 7, 13, (byte)0 },
                     { 4, 4, (byte)0 },
+                    { 10, 15, (byte)0 },
                     { 4, 3, (byte)0 },
                     { 3, 3, (byte)0 },
+                    { 3, 16, (byte)0 },
                     { 2, 2, (byte)0 },
-                    { 8, 9, (byte)0 }
+                    { 2, 17, (byte)0 },
+                    { 9, 14, (byte)0 },
+                    { 9, 11, (byte)0 }
                 });
 
             migrationBuilder.InsertData(
-                table: "BookTag",
-                columns: new[] { "BookId", "TagId" },
+                table: "BookCustomer",
+                columns: new[] { "BookId", "CustomerId" },
                 values: new object[,]
                 {
+                    { 14, 2 },
+                    { 13, 2 },
+                    { 15, 4 },
+                    { 4, 4 },
+                    { 2, 2 },
                     { 5, 5 },
-                    { 2, 5 },
-                    { 2, 4 },
-                    { 10, 3 },
-                    { 9, 3 },
-                    { 6, 3 },
-                    { 11, 2 },
-                    { 2, 3 },
-                    { 1, 3 },
-                    { 8, 2 },
-                    { 4, 2 },
-                    { 9, 5 },
-                    { 5, 3 },
-                    { 3, 6 },
-                    { 6, 13 },
-                    { 3, 7 },
-                    { 3, 8 },
-                    { 4, 9 },
-                    { 11, 9 },
-                    { 4, 10 },
-                    { 8, 10 },
-                    { 5, 11 },
-                    { 6, 12 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "BookTag",
-                columns: new[] { "BookId", "TagId" },
-                values: new object[,]
-                {
-                    { 1, 2 },
-                    { 7, 13 },
-                    { 7, 14 },
-                    { 7, 15 },
-                    { 9, 16 },
-                    { 11, 16 },
-                    { 12, 6 },
-                    { 8, 1 },
-                    { 10, 18 },
-                    { 10, 17 },
+                    { 16, 5 },
+                    { 6, 6 },
+                    { 11, 10 },
+                    { 10, 10 },
+                    { 9, 9 },
+                    { 3, 3 },
+                    { 8, 8 },
+                    { 7, 7 },
+                    { 12, 1 },
                     { 1, 1 }
                 });
 
             migrationBuilder.InsertData(
-                table: "Ordes",
+                table: "BookTag",
+                columns: new[] { "BookId", "TagId" },
+                values: new object[,]
+                {
+                    { 1, 3 },
+                    { 11, 2 },
+                    { 6, 13 },
+                    { 7, 13 },
+                    { 8, 2 },
+                    { 4, 2 },
+                    { 1, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "BookTag",
+                columns: new[] { "BookId", "TagId" },
+                values: new object[,]
+                {
+                    { 8, 1 },
+                    { 7, 14 },
+                    { 1, 1 },
+                    { 7, 15 },
+                    { 9, 16 },
+                    { 11, 16 },
+                    { 2, 3 },
+                    { 5, 3 },
+                    { 6, 12 },
+                    { 5, 11 },
+                    { 6, 3 },
+                    { 9, 3 },
+                    { 10, 3 },
+                    { 8, 10 },
+                    { 2, 4 },
+                    { 2, 5 },
+                    { 5, 5 },
+                    { 9, 5 },
+                    { 4, 10 },
+                    { 11, 9 },
+                    { 3, 6 },
+                    { 12, 6 },
+                    { 3, 7 },
+                    { 4, 9 },
+                    { 3, 8 },
+                    { 10, 18 },
+                    { 10, 17 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Orders",
                 columns: new[] { "OrderId", "CustomerId", "OrderNo" },
                 values: new object[,]
                 {
-                    { 5, 4, "55161583-e1a0-4586-8d0f-89f543093dd4" },
-                    { 1, 1, "45345648-7955-455d-804e-2d9c461f44cd" },
-                    { 2, 1, "17add3c2-ca45-4d7c-a4e8-95cc772be6f3" },
-                    { 3, 1, "e011f440-e34b-4474-b2e0-8fc17eaac695" },
-                    { 4, 1, "5a17b5f6-7ca8-4be9-95cc-3bef520c760b" },
-                    { 6, 5, "d99da0c0-d1b0-4ce4-9707-f915f06288d4" }
+                    { 6, 5, "1a7bb012-55bd-40b4-9442-051d17025da0" },
+                    { 4, 3, "a33911f3-9529-43af-b338-dde1d368256b" },
+                    { 5, 4, "0e60922e-3d5d-438d-a0e7-ceedcd870d18" },
+                    { 2, 1, "b4f88486-e948-442c-9e83-75e0b2a1500f" },
+                    { 1, 1, "87d400cd-9041-40f1-bb1a-1af27a524d72" },
+                    { 3, 2, "6621ee52-7c79-4344-8cdd-86e66e8a2aad" },
+                    { 10, 10, "9df9464c-55c8-4a67-853b-ecbcd4b18d4d" },
+                    { 8, 6, "14627ea5-a852-4cf9-84dc-212d444bc3d1" },
+                    { 7, 6, "63987a93-26e8-4990-8264-d9b9fbc34985" },
+                    { 9, 8, "69136cda-22bc-4206-aef0-210c0b4232ca" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PriceOffers",
+                columns: new[] { "PriceOfferId", "BookId", "NewPrice", "PromotionalText" },
+                values: new object[,]
+                {
+                    { 7, 8, 30.495f, "Special Offer!" },
+                    { 6, 6, 26.9925f, "Xmas Season Offer!" },
+                    { 5, 5, 30.594002f, "Xmas Season Offer!" },
+                    { 9, 10, 15.7425f, "Xmas Season Offer!" },
+                    { 10, 11, 53.2425f, "Xmas Season Offer!" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PriceOffers",
+                columns: new[] { "PriceOfferId", "BookId", "NewPrice", "PromotionalText" },
+                values: new object[,]
+                {
+                    { 11, 12, 23.2425f, "Xmas Season Offer!" },
+                    { 4, 4, 56.9925f, "Xmas Season Offer!" },
+                    { 3, 3, 25.4925f, "Xmas Season Offer!" },
+                    { 2, 2, 28.792002f, "Xmas Season Offer!" },
+                    { 1, 1, 36.891f, "Xmas Season Offer!" },
+                    { 8, 9, 60.7425f, "Xmas Season Offer!" }
                 });
 
             migrationBuilder.InsertData(
@@ -454,30 +531,30 @@ namespace BookApp.Migrations
                 columns: new[] { "ReviewId", "BookId", "Comment", "CustomerId", "NumStars" },
                 values: new object[,]
                 {
-                    { 20, 14, "Excellent resource for data science", 3, 5 },
-                    { 3, 3, "Informative but could be more engaging", 3, 3 },
-                    { 19, 13, "Disappointing, not what I was expecting", 2, 2 },
+                    { 1, 1, "Great book, easy to understand.", 1, 5 },
+                    { 10, 7, "Helpful guide for beginners", 1, 4 },
                     { 18, 12, "Informative but could be more comprehensive", 1, 3 },
                     { 2, 2, "Good information but could be more in-depth.", 2, 4 },
-                    { 10, 7, "Helpful guide for beginners", 1, 4 },
-                    { 1, 1, "Great book, easy to understand.", 1, 5 },
-                    { 11, 15, "Disappointing, not what I was expecting", 2, 2 },
-                    { 17, 16, "Good introduction to Cloud Native Infrastructure", 9, 4 },
-                    { 12, 17, "Great book, easy to understand", 4, 5 },
-                    { 21, 6, "Good introduction to Cloud Native Infrastructure", 4, 4 },
-                    { 5, 5, "Excellent resource for data science", 5, 5 },
-                    { 13, 8, "Good read, helpful examples", 5, 4 },
-                    { 22, 7, "Informative but could be more comprehensive", 5, 4 },
-                    { 6, 6, "Poorly written, not useful", 6, 1 },
-                    { 14, 10, "Informative but could be more engaging", 6, 3 },
-                    { 7, 17, "Good introduction to AI", 7, 4 },
-                    { 15, 9, "Too basic for my needs", 7, 2 },
+                    { 3, 3, "Informative but could be more engaging", 3, 3 },
+                    { 19, 13, "Disappointing, not what I was expecting", 2, 2 },
                     { 24, 5, "Excellent resource for data science", 7, 5 },
+                    { 23, 8, "Disappointing, not what I was expecting", 6, 2 },
                     { 8, 8, "Some good insights, but could be more comprehensive", 8, 3 },
                     { 16, 10, "Poorly written, not useful", 8, 1 },
+                    { 14, 10, "Informative but could be more engaging", 6, 3 },
                     { 9, 1, "I love this book!", 9, 5 },
+                    { 17, 16, "Good introduction to Cloud Native Infrastructure", 9, 4 },
+                    { 11, 15, "Disappointing, not what I was expecting", 2, 2 },
+                    { 6, 6, "Poorly written, not useful", 6, 1 },
+                    { 13, 8, "Good read, helpful examples", 5, 4 },
+                    { 5, 5, "Excellent resource for data science", 5, 5 },
+                    { 21, 6, "Good introduction to Cloud Native Infrastructure", 4, 4 },
+                    { 12, 17, "Great book, easy to understand", 4, 5 },
                     { 4, 4, "Too basic for my needs", 4, 2 },
-                    { 23, 8, "Disappointing, not what I was expecting", 6, 2 }
+                    { 20, 14, "Excellent resource for data science", 3, 5 },
+                    { 7, 17, "Good introduction to AI", 7, 4 },
+                    { 22, 7, "Informative but could be more comprehensive", 5, 4 },
+                    { 15, 9, "Too basic for my needs", 7, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -485,19 +562,33 @@ namespace BookApp.Migrations
                 columns: new[] { "ItemId", "BookId", "BookPrice", "NumBooks", "OrderId" },
                 values: new object[,]
                 {
-                    { 1, 1, 30.989999999999998, (short)1, 1 },
-                    { 2, 2, 35.990000000000002, (short)1, 2 },
-                    { 3, 6, 35.990000000000002, (short)1, 3 },
-                    { 4, 11, 50.990000000000002, (short)1, 4 },
-                    { 5, 16, 35.990000000000002, (short)1, 5 },
-                    { 6, 1, 30.989999999999998, (short)2, 6 },
-                    { 7, 4, 40.990000000000002, (short)1, 6 }
+                    { 1, 1, 36.890998840332031, (short)1, 1 },
+                    { 2, 2, 28.792001724243164, (short)1, 1 },
+                    { 16, 17, 39.990001678466797, (short)1, 2 },
+                    { 3, 6, 26.992500305175781, (short)1, 3 },
+                    { 4, 11, 53.242500305175781, (short)1, 4 },
+                    { 5, 16, 49.990001678466797, (short)1, 5 },
+                    { 6, 1, 36.890998840332031, (short)2, 5 },
+                    { 7, 5, 30.594001770019531, (short)1, 6 },
+                    { 8, 6, 26.992500305175781, (short)1, 6 },
+                    { 9, 7, 25.989999771118164, (short)1, 6 },
+                    { 10, 8, 30.495000839233398, (short)2, 7 },
+                    { 11, 9, 60.742500305175781, (short)1, 7 },
+                    { 12, 10, 15.742500305175781, (short)1, 7 },
+                    { 13, 11, 53.242500305175781, (short)1, 8 },
+                    { 14, 12, 23.242500305175781, (short)1, 9 },
+                    { 15, 13, 24.989999771118164, (short)2, 10 }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookAuthor_AuthorId",
                 table: "BookAuthor",
                 column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookCustomer_CustomerId",
+                table: "BookCustomer",
+                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_ISBN",
@@ -521,14 +612,14 @@ namespace BookApp.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_CustomerId",
+                table: "Orders",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderStatus_OrderId",
                 table: "OrderStatus",
                 column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ordes_CustomerId",
-                table: "Ordes",
-                column: "CustomerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PriceOffers_BookId",
@@ -553,6 +644,9 @@ namespace BookApp.Migrations
                 name: "BookAuthor");
 
             migrationBuilder.DropTable(
+                name: "BookCustomer");
+
+            migrationBuilder.DropTable(
                 name: "BookTag");
 
             migrationBuilder.DropTable(
@@ -574,7 +668,7 @@ namespace BookApp.Migrations
                 name: "Tags");
 
             migrationBuilder.DropTable(
-                name: "Ordes");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Books");

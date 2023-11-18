@@ -19,7 +19,8 @@ namespace BookApp
             //BookAverageVotesWithLinq();
             //BookAverageVotesWithMethod();
 
-            FromSqlRawQueries();
+            //FromSqlRawQueries();
+            bestWayToUpdate();
         }
 
         static void GetBooksList()
@@ -27,7 +28,7 @@ namespace BookApp
             var configuration = new MapperConfiguration(cfg =>
                         {
                             cfg.CreateMap<Review, ReviewDTO>().ReverseMap();
-                            cfg.CreateMap<Book, BookDTO>().ReverseMap();
+                            cfg.CreateMap<PriceOffer, BookDTO>().ReverseMap();
                         });
 
             configuration.AssertConfigurationIsValid();
@@ -113,7 +114,18 @@ namespace BookApp
             {
                 Console.WriteLine($"{item.Title}");
             }
-        }        
+        }
+
+
+        static void bestWayToUpdate()
+        {
+            using var context = new AppBookContext();
+            var b = context.Books.AsNoTracking().First();
+            b.ISBN = "978-0134685992";
+
+            context.Books.Update(b);
+            context.SaveChanges();
+        }
 
     }
 }

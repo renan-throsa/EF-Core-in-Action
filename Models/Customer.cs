@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BookApp.Models.Configs;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookApp.Models
@@ -16,9 +17,11 @@ namespace BookApp.Models
         [MaxLength(101)]
         public string FullName { get; private set; }
 
-
         public ICollection<Review> Reviews { get; set; }
+
         public ICollection<Order> Orders { get; set; }
+
+        public ICollection<BookCustomer> WishList { get; set; }
 
     }
 }
