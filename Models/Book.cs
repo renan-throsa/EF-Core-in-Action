@@ -23,7 +23,6 @@ namespace BookApp.Models
         public ICollection<Review> Reviews { get; set; }
         public ICollection<BookTag> Tags { get; set; }
         public ICollection<BookAuthor> Authors { get; set; }
-
         public ICollection<BookCustomer> WishList { get; set; }
 
 

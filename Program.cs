@@ -5,7 +5,6 @@ using BookApp.Models.DTOS;
 using BookApp.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace BookApp
@@ -20,15 +19,21 @@ namespace BookApp
             //BookAverageVotesWithMethod();
 
             //FromSqlRawQueries();
-            bestWayToUpdate();
+            //bestWayToUpdate();
+            GetBooksPromotionList();
         }
 
-        static void GetBooksList()
+        static void GetBooksPromotionList()
         {
             var configuration = new MapperConfiguration(cfg =>
                         {
-                            cfg.CreateMap<Review, ReviewDTO>().ReverseMap();
-                            cfg.CreateMap<PriceOffer, BookDTO>().ReverseMap();
+                            cfg.CreateMap<Book, BookDTO>()
+                            .ForMember(dest => dest.AuthorsName, opt => opt.MapFrom(src => string.Join(", ", src.Authors.Select(ba => ba.Author.Name))))
+                            .ForMember(dest => dest.AveStars, opt => opt.MapFrom(src => (double?)(src.Reviews.Any() ? src.Reviews.Average(y => y.NumStars) : null)))
+                            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => string.Join(", ", src.Tags.Select(bt => bt.Tag.TagName))))
+                            .ForMember(dest => dest.PromotionNewPrice, opt => opt.MapFrom(src => (float?)(src.Promotion != null ? src.Promotion.NewPrice : null)))
+                            .ForMember(dest => dest.PromotionPromotionalText, opt => opt.MapFrom(src => (src.Promotion != null ? src.Promotion.PromotionalText : null)))
+                            .ReverseMap();
                         });
 
             configuration.AssertConfigurationIsValid();
@@ -36,17 +41,27 @@ namespace BookApp
             var mapper = configuration.CreateMapper();
 
             using var context = new AppBookContext();
-            var query = context.Books.Include(x => x.Promotion).Include(x => x.Reviews);
-            var dtoList = mapper.Map<IEnumerable<BookDTO>>(query.ToList());
 
+            var query = context.Books.AsNoTracking();
+
+            var dtoList = mapper.ProjectTo<BookDTO>(query);
+            Console.WriteLine();
             foreach (var b in dtoList)
             {
-                Console.WriteLine($"{b.Title} for {b.PromotionNewPrice}");
-                Console.WriteLine();
-                foreach (var r in b.Reviews)
+                Console.WriteLine($"{b.BookId} - {b.Title}");
+                Console.WriteLine($"by {b.AuthorsName}");
+                Console.WriteLine($"Published on {b.PublishedOn}");
+                Console.WriteLine($"Categories: {b.Tags}");
+                Console.WriteLine($"Votes: {b.AveStars}");
+                if (b.PromotionNewPrice > 0)
                 {
-                    Console.WriteLine($"     {r.VoterName} says: {r.Comment}");
+                    Console.WriteLine($"Price: {b.PromotionNewPrice} ! Saves $ {b.Price - b.PromotionNewPrice} ! {b.PromotionPromotionalText}");
                 }
+                else
+                {
+                    Console.WriteLine($"price: {b.Price}");
+                }
+                Console.WriteLine();
             }
         }
 
@@ -57,13 +72,13 @@ namespace BookApp
             {
                 BookId = x.BookId,
                 Title = x.Title,
-                AveVotes = UdfMethods.AverageVotes(x.BookId)
+                AveStars = UdfMethods.AverageVotes(x.BookId)
             }).ToList();
 
             Console.WriteLine("");
             foreach (var item in bookAndVotes)
             {
-                Console.WriteLine($"{item.Title} : {item.AveVotes}");
+                Console.WriteLine($"{item.Title} : {item.AveStars}");
             }
         }
 
