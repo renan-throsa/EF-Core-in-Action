@@ -15,6 +15,7 @@ namespace BookApp.Models.Configs
             builder.Property(x => x.PublishedOn).HasColumnType("datetime");
             builder.Property(x => x.ISBN).IsRequired().HasMaxLength(14);
             builder.HasIndex(x => x.ISBN).IsUnique();
+            builder.Property(x => x.ImageUrl).IsRequired(false);
 
             builder.HasOne(x => x.Promotion).WithOne(y => y.Book);
             builder.HasMany(x => x.Reviews).WithOne(y => y.Book);            

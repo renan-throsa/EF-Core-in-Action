@@ -12,7 +12,7 @@ namespace BookApp.Models.DTOS
         public string AuthorsName { get; set; }
         public DateTime PublishedOn { get; set; }
         public string Tags { get; set; }
-        public double AveStars { get; set; }
+        public double? AveStars { get; set; }
         public float Price { get; set; }  
         public float PromotionNewPrice { get; set; }
         public string PromotionPromotionalText { get; set; }

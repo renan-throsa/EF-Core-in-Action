@@ -9,18 +9,19 @@ using System.Linq;
 
 namespace BookApp
 {
-
+    
     class Program
     {
-
         static void Main(string[] args)
         {
+            
             //BookAverageVotesWithLinq();
             //BookAverageVotesWithMethod();
 
             //FromSqlRawQueries();
             //bestWayToUpdate();
-            GetBooksPromotionList();
+            GetBooksPromotionList();            
+
         }
 
         static void GetBooksPromotionList()
