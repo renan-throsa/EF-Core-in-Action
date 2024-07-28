@@ -2,12 +2,13 @@
 using BookApp.Data.Utils;
 using BookApp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BookApp.Data.Contexts
 {
-    public class SqlContext: DbContext
+    public class SqlContext : DbContext
     {
-        private readonly string ConnectionString;
+        private readonly string _connectionString;
 
         public DbSet<Book> Books { get; set; }
         public DbSet<Review> Reviews { get; set; }
@@ -18,18 +19,19 @@ namespace BookApp.Data.Contexts
         public DbSet<Item> Items { get; set; }
         public DbSet<Customer> Customers { get; set; }
 
-        public SqlContext()
+        public SqlContext(string connectionString = "Server=.\\SQLEXPRESS;Database=BooksApp;Trusted_Connection=True;")
         {
-            ConnectionString = "Server=.\\SQLEXPRESS;Database=BooksApp;Trusted_Connection=True;";
+            _connectionString = connectionString;
         }
 
-        protected override void OnConfiguring(
-            DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
                 .EnableSensitiveDataLogging()
                 .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
-                .UseSqlServer(ConnectionString);
+                .UseSqlServer(_connectionString);
+
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,7 +50,8 @@ namespace BookApp.Data.Contexts
             modelBuilder.ApplyConfiguration(new ItemEntityConfigs());
 
             modelBuilder.HasDbFunction(() => UdfMethods.AverageVotes(default(int)));
-            modelBuilder.HasDbFunction(() => UdfMethods.TotalOrderPrice(default(int)));
+            modelBuilder.HasDbFunction(() => UdfMethods.TotalOrderPrice(default(int)));           
+
         }
     }
 }

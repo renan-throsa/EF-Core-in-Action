@@ -7,11 +7,11 @@ using BookApp.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 //BookAverageVotesWithLinq();
-//BookAverageVotesWithMethod();
+BookAverageVotesWithMethod();
 
 //FromSqlRawQueries();
 //bestWayToUpdate();
-GetBooksPromotionList();
+//GetBooksPromotionList();
 
 
 
@@ -77,7 +77,7 @@ static void BookAverageVotesWithMethod()
 static void BookAverageVotesWithLinq()
 {
     using var context = new SqlContext();
-    var books = context.Books.Select(x => new { Title = x.Title, Evaluation = (double?)x.Reviews.Average(y => y.NumStars) });
+    var books = context.Books.Select(x => new { x.Title, Evaluation = (double?)x.Reviews.Average(y => y.NumStars) });
     Console.WriteLine("");
     foreach (var item in books)
     {
@@ -127,9 +127,8 @@ static void FromSqlRawQueries()
 static void bestWayToUpdate()
 {
     using var context = new SqlContext();
-    var b = context.Books.AsNoTracking().First();
+    var b = context.Books.First();
     b.ISBN = "978-0134685992";
-
-    context.Books.Update(b);
+   
     context.SaveChanges();
 }
