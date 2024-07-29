@@ -2,7 +2,6 @@
 using BookApp.Data.Utils;
 using BookApp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BookApp.Data.Contexts
 {
@@ -10,16 +9,16 @@ namespace BookApp.Data.Contexts
     {
         private readonly string _connectionString;
 
-        public DbSet<Book> Books { get; set; }
-        public DbSet<Review> Reviews { get; set; }
-        public DbSet<Author> Authors { get; set; }
-        public DbSet<PriceOffer> PriceOffers { get; set; }
-        public DbSet<Tag> Tags { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<Item> Items { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-
-        public SqlContext(string connectionString = "Server=.\\SQLEXPRESS;Database=BooksApp;Trusted_Connection=True;")
+        public DbSet<Book> Books { get; init; }
+        public DbSet<Review> Reviews { get; init; }
+        public DbSet<Author> Authors { get; init; }
+        public DbSet<PriceOffer> PriceOffers { get; init; }
+        public DbSet<Tag> Tags { get; init; }
+        public DbSet<Order> Orders { get; init; }
+        public DbSet<Item> Items { get; init; }
+        public DbSet<Customer> Customers { get; init; }
+        
+        public SqlContext(string connectionString = "Server=.\\SQLEXPRESS;Database=BooksApp;Trusted_Connection=true;TrustServerCertificate=true;")
         {
             _connectionString = connectionString;
         }

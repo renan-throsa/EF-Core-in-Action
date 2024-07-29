@@ -12,7 +12,7 @@ namespace BookApp.Test
         [Fact]
         public void BookAverageVotesWithMethodOk()
         {
-            using var context = new SqlContext($"Server=.\\SQLEXPRESS;Database=BooksAppTest_{nameof(BookAverageVotesWithMethodOk)};Trusted_Connection=True;");
+            using var context = new SqlContext($"Server=.\\SQLEXPRESS;Database=BooksAppTest_{nameof(BookAverageVotesWithMethodOk)};Trusted_Connection=True;TrustServerCertificate=true;");
             context.Database.Migrate();
 
             var bookAndVotes = context.Books.Where(x=> x.BookId == 1).Select(x => new BookViewModel
@@ -30,7 +30,7 @@ namespace BookApp.Test
         [Fact]
         public void BookAverageVotesWithLinqOk()
         {
-            using var context = new SqlContext($"Server=.\\SQLEXPRESS;Database=BooksAppTest_{nameof(BookAverageVotesWithLinqOk)};Trusted_Connection=True;");
+            using var context = new SqlContext($"Server=.\\SQLEXPRESS;Database=BooksAppTest_{nameof(BookAverageVotesWithLinqOk)};Trusted_Connection=True;TrustServerCertificate=true;");
             context.Database.Migrate();
 
             var bookAndVotes = context.Books.Where(x => x.BookId == 1).Select(x => new BookViewModel

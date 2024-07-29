@@ -1,44 +1,23 @@
-﻿// See https://aka.ms/new-console-template for more information
-using AutoMapper;
+﻿using AutoMapper;
 using BookApp.Data.Contexts;
 using BookApp.Data.Utils;
 using BookApp.Domain.Entities;
 using BookApp.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
+
 //BookAverageVotesWithLinq();
-BookAverageVotesWithMethod();
+//BookAverageVotesWithMethod();
 
 //FromSqlRawQueries();
 //bestWayToUpdate();
-//GetBooksPromotionList();
+
+printBooksPromotionList(GetBooksList());
 
 
-
-static void GetBooksPromotionList()
+static void printBooksPromotionList(IEnumerable<BookViewModel> books)
 {
-    var configuration = new MapperConfiguration(cfg =>
-    {
-        cfg.CreateMap<Book, BookViewModel>()
-        .ForMember(dest => dest.AuthorsName, opt => opt.MapFrom(src => string.Join(", ", src.Authors.Select(ba => ba.Author.Name))))
-        .ForMember(dest => dest.AveStars, opt => opt.MapFrom(src => (double?)(src.Reviews.Any() ? src.Reviews.Average(y => y.NumStars) : null)))
-        .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => string.Join(", ", src.Tags.Select(bt => bt.Tag.TagName))))
-        .ForMember(dest => dest.PromotionNewPrice, opt => opt.MapFrom(src => (float?)(src.Promotion != null ? src.Promotion.NewPrice : null)))
-        .ForMember(dest => dest.PromotionPromotionalText, opt => opt.MapFrom(src => (src.Promotion != null ? src.Promotion.PromotionalText : null)))
-        .ReverseMap();
-    });
-
-    configuration.AssertConfigurationIsValid();
-
-    var mapper = configuration.CreateMapper();
-
-    using var context = new SqlContext();
-
-    var query = context.Books.AsNoTracking();
-
-    var dtoList = mapper.ProjectTo<BookViewModel>(query);
-    Console.WriteLine();
-    foreach (var b in dtoList)
+    foreach (var b in books)
     {
         Console.WriteLine($"{b.BookId} - {b.Title}");
         Console.WriteLine($"by {b.AuthorsName}");
@@ -55,6 +34,43 @@ static void GetBooksPromotionList()
         }
         Console.WriteLine();
     }
+}
+
+static IEnumerable<BookViewModel> GetBooksList()
+{
+    using var context = new NoSqlContext();
+
+    if (!context.Books.Any()) {
+        context.Books.AddRange(GetBooksPromotionList());
+        context.SaveChanges();
+    }
+    return context.Books.ToList(); 
+}
+
+static IEnumerable<BookViewModel> GetBooksPromotionList()
+{
+    var configuration = new MapperConfiguration(cfg =>
+    {
+        cfg.CreateMap<Book, BookViewModel>()
+        .ForMember(dest => dest.Id, opt => opt.Ignore())
+        .ForMember(dest => dest.AuthorsName, opt => opt.MapFrom(src => string.Join(", ", src.Authors.Select(ba => ba.Author.Name))))
+        .ForMember(dest => dest.AveStars, opt => opt.MapFrom(src => (double?)(src.Reviews.Any() ? src.Reviews.Average(y => y.NumStars) : null)))
+        .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => string.Join(", ", src.Tags.Select(bt => bt.Tag.TagName))))
+        .ForMember(dest => dest.PromotionNewPrice, opt => opt.MapFrom(src => (float?)(src.Promotion != null ? src.Promotion.NewPrice : null)))
+        .ForMember(dest => dest.PromotionPromotionalText, opt => opt.MapFrom(src => (src.Promotion != null ? src.Promotion.PromotionalText : null)))
+        .ReverseMap();
+    });
+
+    configuration.AssertConfigurationIsValid();
+
+    var mapper = configuration.CreateMapper();
+
+    using var context = new SqlContext();
+
+    var query = context.Books.AsNoTracking();
+
+    return mapper.ProjectTo<BookViewModel>(query).ToList();
+
 }
 
 static void BookAverageVotesWithMethod()
@@ -129,6 +145,6 @@ static void bestWayToUpdate()
     using var context = new SqlContext();
     var b = context.Books.First();
     b.ISBN = "978-0134685992";
-   
+
     context.SaveChanges();
 }
